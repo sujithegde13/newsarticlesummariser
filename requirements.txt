@@ -1,0 +1,6 @@
+flask>=2.0.0
+gunicorn>=20.1.0
+email-validator
+flask-sqlalchemy
+psycopg2-binary
+trafilatura
