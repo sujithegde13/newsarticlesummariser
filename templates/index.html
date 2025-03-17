@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Analyzer with Sentiment Analysis and Hindi TTS</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-newspaper me-2"></i>
+                News Analyzer
+            </a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-primary">
+                        <h2 class="mb-0 text-white">News Analysis with Sentiment & Hindi TTS</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">
+                            This application extracts news articles related to a given company, performs sentiment analysis, 
+                            conducts a comparative analysis, and generates a text-to-speech (TTS) output in Hindi.
+                        </p>
+                        
+                        <!-- Input Form -->
+                        <form id="analysis-form" class="mb-4">
+                            <div class="mb-3">
+                                <label for="company-select" class="form-label">Select or type a company name:</label>
+                                <div class="input-group">
+                                    <input class="form-control" list="company-options" id="company-input" name="company_name" placeholder="Type or select a company..." required>
+                                    <datalist id="company-options">
+                                        {% for company in companies %}
+                                        <option value="{{ company }}">
+                                        {% endfor %}
+                                    </datalist>
+                                    <button type="submit" class="btn btn-primary" id="analyze-btn">
+                                        <i class="fas fa-search me-1"></i> Analyze
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <!-- Loading indicator -->
+                        <div id="loading" class="text-center d-none">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2" id="loading-message">Analyzing news articles...</p>
+                            <div class="progress mt-3">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" id="progress-bar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Error Alert -->
+                        <div id="error-container" class="alert alert-danger d-none" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <span id="error-message"></span>
+                        </div>
+                        
+                        <!-- Results Container -->
+                        <div id="results-container" class="d-none">
+                            <!-- Tabs for different views -->
+                            <ul class="nav nav-tabs" id="resultTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="visual-tab" data-bs-toggle="tab" data-bs-target="#visual" type="button" role="tab" aria-controls="visual" aria-selected="true">
+                                        <i class="fas fa-chart-pie me-1"></i> Visual Report
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="audio-tab" data-bs-toggle="tab" data-bs-target="#audio" type="button" role="tab" aria-controls="audio" aria-selected="false">
+                                        <i class="fas fa-headphones me-1"></i> Hindi TTS
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="json-tab" data-bs-toggle="tab" data-bs-target="#json" type="button" role="tab" aria-controls="json" aria-selected="false">
+                                        <i class="fas fa-code me-1"></i> JSON Data
+                                    </button>
+                                </li>
+                            </ul>
+                            
+                            <!-- Tab content -->
+                            <div class="tab-content border border-top-0 rounded-bottom p-3" id="resultTabContent">
+                                <!-- Visual Report Tab -->
+                                <div class="tab-pane fade show active" id="visual" role="tabpanel" aria-labelledby="visual-tab">
+                                    <!-- Sentiment Meter -->
+                                    <div id="sentiment-meter-container" class="mb-4"></div>
+                                    
+                                    <!-- Company Info -->
+                                    <div id="company-info" class="mb-4"></div>
+                                    
+                                    <!-- Articles Analysis -->
+                                    <div id="articles-container"></div>
+                                </div>
+                                
+                                <!-- Audio Tab -->
+                                <div class="tab-pane fade" id="audio" role="tabpanel" aria-labelledby="audio-tab">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4>Hindi Text-to-Speech Summary</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div id="hindi-text" class="mb-3 p-3 bg-dark rounded"></div>
+                                            <div id="audio-player-container" class="mt-4">
+                                                <audio id="audio-player" controls class="w-100"></audio>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- JSON Tab -->
+                                <div class="tab-pane fade" id="json" role="tabpanel" aria-labelledby="json-tab">
+                                    <div class="card">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h4>Raw JSON Data</h4>
+                                            <button id="copy-json" class="btn btn-sm btn-secondary">
+                                                <i class="fas fa-copy me-1"></i> Copy
+                                            </button>
+                                        </div>
+                                        <div class="card-body">
+                                            <pre id="json-container" class="bg-dark p-3 rounded json-container" style="max-height: 500px; overflow-y: auto;"></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-5 py-3 bg-dark text-center text-white">
+        <div class="container">
+            <p>News Analyzer with Sentiment Analysis and Hindi TTS © 2023</p>
+        </div>
+    </footer>
+
+    <!-- Hidden input for storing analysis data -->
+    <input type="hidden" id="analysis-data" value="{}">
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('analysis-form');
+            const loading = document.getElementById('loading');
+            const resultsContainer = document.getElementById('results-container');
+            const errorContainer = document.getElementById('error-container');
+            const errorMessage = document.getElementById('error-message');
+            const progressBar = document.getElementById('progress-bar');
+            const loadingMessage = document.getElementById('loading-message');
+            const jsonContainer = document.getElementById('json-container');
+            const companyInfo = document.getElementById('company-info');
+            const articlesContainer = document.getElementById('articles-container');
+            const hindiText = document.getElementById('hindi-text');
+            const audioPlayer = document.getElementById('audio-player');
+            const copyJsonBtn = document.getElementById('copy-json');
+            const analysisDataInput = document.getElementById('analysis-data');
+            
+            // Copy JSON button
+            copyJsonBtn.addEventListener('click', function() {
+                navigator.clipboard.writeText(jsonContainer.textContent)
+                    .then(() => {
+                        copyJsonBtn.innerHTML = '<i class="fas fa-check me-1"></i> Copied!';
+                        setTimeout(() => {
+                            copyJsonBtn.innerHTML = '<i class="fas fa-copy me-1"></i> Copy';
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy: ', err);
+                    });
+            });
+            
+            // Submit form
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const companyInput = document.getElementById('company-input');
+                const companyName = companyInput.value.trim();
+                
+                if (!companyName) {
+                    showError('Please enter a company name');
+                    return;
+                }
+                
+                // Reset UI
+                resetUI();
+                showLoading();
+                
+                // Start analysis
+                startAnalysis(companyName);
+            });
+            
+            function resetUI() {
+                errorContainer.classList.add('d-none');
+                resultsContainer.classList.add('d-none');
+                jsonContainer.textContent = '';
+                companyInfo.innerHTML = '';
+                articlesContainer.innerHTML = '';
+                hindiText.innerHTML = '';
+                audioPlayer.src = '';
+                audioPlayer.classList.add('d-none');
+                progressBar.style.width = '0%';
+                analysisDataInput.value = '{}';
+            }
+            
+            function showLoading() {
+                loading.classList.remove('d-none');
+            }
+            
+            function hideLoading() {
+                loading.classList.add('d-none');
+            }
+            
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorContainer.classList.remove('d-none');
+                hideLoading();
+            }
+            
+            function showResults() {
+                resultsContainer.classList.remove('d-none');
+                hideLoading();
+            }
+            
+            function updateProgress(percent, message) {
+                progressBar.style.width = `${percent}%`;
+                loadingMessage.textContent = message || 'Analyzing news articles...';
+            }
+            
+            function startAnalysis(companyName) {
+                // API request to start analysis
+                fetch('/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `company_name=${encodeURIComponent(companyName)}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        showError(data.error);
+                        return;
+                    }
+                    
+                    if (data.status === 'completed') {
+                        // Results already available (from cache)
+                        displayResults(data.data);
+                    } else {
+                        // Need to poll for results
+                        pollTaskStatus(data.task_id);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showError('An error occurred while starting the analysis');
+                });
+            }
+            
+            function pollTaskStatus(taskId) {
+                let attempts = 0;
+                const maxAttempts = 30;
+                const pollInterval = 2000; // 2 seconds
+                
+                const poll = function() {
+                    attempts++;
+                    const progressPercent = Math.min(90, 10 + (attempts * 80 / maxAttempts));
+                    updateProgress(progressPercent, `Processing analysis (attempt ${attempts}/${maxAttempts})...`);
+                    
+                    fetch(`/task-status/${taskId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                showError(data.error);
+                                return;
+                            }
+                            
+                            if (data.completed) {
+                                // Analysis complete
+                                updateProgress(100, 'Analysis complete!');
+                                displayResults(data.data);
+                            } else if (attempts < maxAttempts) {
+                                // Continue polling
+                                setTimeout(poll, pollInterval);
+                            } else {
+                                // Timeout
+                                showError('Analysis timed out. Please try again later.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            showError('An error occurred while checking analysis status');
+                        });
+                };
+                
+                // Start polling
+                setTimeout(poll, 1000);
+            }
+            
+            function displayResults(results) {
+                // Store the full results for use in other functions
+                analysisDataInput.value = JSON.stringify(results);
+                
+                // Format JSON for display
+                jsonContainer.textContent = JSON.stringify(results, null, 2);
+                
+                // Display company info
+                const company = results.Company || 'Unknown Company';
+                companyInfo.innerHTML = `
+                    <div class="alert alert-info">
+                        <h3>${company}</h3>
+                        <p>${results.Final_Sentiment_Analysis || ''}</p>
+                    </div>
+                `;
+                
+                // Create sentiment meter
+                const sentimentDist = results.Comparative_Sentiment_Score?.Sentiment_Distribution || {};
+                const sentimentContainer = document.getElementById('sentiment-meter-container');
+                createSentimentMeter(
+                    sentimentContainer,
+                    sentimentDist.POSITIVE || 0,
+                    sentimentDist.NEGATIVE || 0,
+                    sentimentDist.NEUTRAL || 0
+                );
+                
+                // Display Hindi text
+                hindiText.textContent = results.Hindi_Text || 'Hindi text not available';
+                
+                // Setup audio player if audio is available
+                if (results.Audio) {
+                    const audioSrc = `data:audio/wav;base64,${results.Audio}`;
+                    audioPlayer.src = audioSrc;
+                    audioPlayer.classList.remove('d-none');
+                }
+                
+                // Display articles
+                displayArticles(results.Articles || []);
+                
+                // Show results
+                showResults();
+                
+                // Refresh any dynamic elements
+                refreshInterface();
+            }
+            
+            function displayArticles(articles) {
+                if (articles.length === 0) {
+                    articlesContainer.innerHTML = '<div class="alert alert-warning">No articles found</div>';
+                    return;
+                }
+                
+                let html = '<h3 class="mb-3">Articles Analysis</h3><div class="row">';
+                
+                articles.forEach((article, index) => {
+                    const sentiment = article.sentiment?.label || 'NEUTRAL';
+                    const sentimentClass = 
+                        sentiment === 'POSITIVE' ? 'bg-success' : 
+                        sentiment === 'NEGATIVE' ? 'bg-danger' : 
+                        'bg-warning';
+                    
+                    html += `
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100 article-card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Article ${index + 1}</h5>
+                                    <span class="badge ${sentimentClass}">${sentiment}</span>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">${article.title || 'No Title'}</h5>
+                                    <p class="card-text">${article.summary || 'No summary available'}</p>
+                                    
+                                    <div class="mt-3">
+                                        <strong>Topics:</strong>
+                                        <div class="mt-1">
+                    `;
+                    
+                    // Add topics
+                    const topics = article.topics || [];
+                    topics.forEach(topic => {
+                        html += `<span class="badge bg-info me-1 mb-1">${topic}</span>`;
+                    });
+                    
+                    html += `
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="${article.url || '#'}" target="_blank" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-external-link-alt me-1"></i> Read Original
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+                articlesContainer.innerHTML = html;
+            }
+        });
+    </script>
+</body>
+</html>

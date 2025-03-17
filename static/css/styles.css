@@ -1,0 +1,107 @@
+/* Custom styles for News Analyzer application */
+
+/* Card styling */
+.article-card {
+    transition: transform 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.article-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Sentiment colors */
+.sentiment-positive {
+    color: #28a745;
+}
+
+.sentiment-negative {
+    color: #dc3545;
+}
+
+.sentiment-neutral {
+    color: #6c757d;
+}
+
+/* Topic tag styling */
+.topic-tag {
+    display: inline-block;
+    padding: 0.25em 0.6em;
+    margin-right: 0.3rem;
+    margin-bottom: 0.3rem;
+    font-size: 0.85em;
+    font-weight: 700;
+    border-radius: 10rem;
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
+/* Progress bar styling */
+.sentiment-bar {
+    height: 25px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+/* Audio player styling */
+.audio-player {
+    width: 100%;
+    margin: 20px 0;
+}
+
+/* Loading spinner */
+.loading-spinner {
+    margin: 100px auto;
+    text-align: center;
+}
+
+/* JSON container styling */
+.json-container {
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre-wrap;
+    font-size: 0.9rem;
+}
+
+/* Progress animation */
+@keyframes progress-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.progress-bar-animated {
+    background-size: 200% 200%;
+    animation: progress-animation 2s linear infinite;
+    background-image: linear-gradient(45deg, 
+                                      rgba(255, 255, 255, 0.15) 25%, 
+                                      transparent 25%, 
+                                      transparent 50%, 
+                                      rgba(255, 255, 255, 0.15) 50%, 
+                                      rgba(255, 255, 255, 0.15) 75%, 
+                                      transparent 75%, 
+                                      transparent);
+}
+
+/* Hindi text styling */
+#hindi-text {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    direction: ltr;
+}
+
+/* Adjustments for responsiveness */
+@media (max-width: 768px) {
+    .card-title {
+        font-size: 1.1rem;
+    }
+    
+    .card-text {
+        font-size: 0.9rem;
+    }
+    
+    #hindi-text {
+        font-size: 1rem;
+    }
+}
