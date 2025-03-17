@@ -82,18 +82,137 @@ MOCK_DATA = {
                 "summary": "Tesla CEO Elon Musk announced plans for a new gigafactory to increase production capacity.",
                 "sentiment": {"label": "POSITIVE", "score": 0.88},
                 "topics": ["Manufacturing", "Expansion", "Elon Musk"]
+            },
+            {
+                "title": "Tesla Reaches New Production Milestone",
+                "url": "https://example.com/tesla-production",
+                "summary": "Tesla has achieved a new production milestone, manufacturing 10,000 vehicles in a single week.",
+                "sentiment": {"label": "POSITIVE", "score": 0.91},
+                "topics": ["Production", "Manufacturing", "Milestone"]
+            },
+            {
+                "title": "Tesla Stock Surges After Earnings Report",
+                "url": "https://example.com/tesla-stock",
+                "summary": "Tesla's stock price jumped 15% after the company reported better-than-expected quarterly earnings.",
+                "sentiment": {"label": "POSITIVE", "score": 0.93},
+                "topics": ["Stock", "Earnings", "Investors"]
+            },
+            {
+                "title": "New Battery Technology Announced by Tesla",
+                "url": "https://example.com/tesla-battery",
+                "summary": "Tesla unveiled a new battery technology that increases range by 30% and reduces production costs.",
+                "sentiment": {"label": "POSITIVE", "score": 0.89},
+                "topics": ["Battery", "Technology", "Innovation"]
+            },
+            {
+                "title": "Tesla Faces Production Delays on New Model",
+                "url": "https://example.com/tesla-delays",
+                "summary": "Supply chain issues have caused production delays for Tesla's upcoming vehicle model.",
+                "sentiment": {"label": "NEGATIVE", "score": 0.77},
+                "topics": ["Delays", "Production", "Supply Chain"]
+            },
+            {
+                "title": "Tesla Expands Supercharger Network Globally",
+                "url": "https://example.com/tesla-superchargers",
+                "summary": "Tesla has announced plans to double its global Supercharger network over the next two years.",
+                "sentiment": {"label": "POSITIVE", "score": 0.85},
+                "topics": ["Supercharger", "Infrastructure", "Expansion"]
+            },
+            {
+                "title": "Competition Intensifies in EV Market as Tesla Maintains Lead",
+                "url": "https://example.com/tesla-competition",
+                "summary": "Despite increasing competition from traditional automakers, Tesla maintains its lead in the EV market.",
+                "sentiment": {"label": "NEUTRAL", "score": 0.60},
+                "topics": ["Competition", "Market Share", "Industry"]
+            },
+            {
+                "title": "Tesla's Solar Roof Installations Growing Rapidly",
+                "url": "https://example.com/tesla-solar",
+                "summary": "Tesla's solar roof installations have increased by 70% year-over-year as demand for renewable energy grows.",
+                "sentiment": {"label": "POSITIVE", "score": 0.87},
+                "topics": ["Solar", "Renewable Energy", "Growth"]
+            },
+            {
+                "title": "Tesla Autopilot Receives Software Update",
+                "url": "https://example.com/tesla-autopilot",
+                "summary": "Tesla has rolled out a significant software update to its Autopilot system, adding new safety features.",
+                "sentiment": {"label": "POSITIVE", "score": 0.84},
+                "topics": ["Autopilot", "Software", "Safety"]
+            },
+            {
+                "title": "Tesla Opens New Showroom in India",
+                "url": "https://example.com/tesla-india",
+                "summary": "Tesla has opened its first showroom in India, signaling entry into the world's second-most populous market.",
+                "sentiment": {"label": "POSITIVE", "score": 0.86},
+                "topics": ["Expansion", "International", "India"]
+            },
+            {
+                "title": "Lawsuit Filed Against Tesla Over Workplace Conditions",
+                "url": "https://example.com/tesla-lawsuit",
+                "summary": "Former employees have filed a lawsuit against Tesla alleging poor workplace conditions and discrimination.",
+                "sentiment": {"label": "NEGATIVE", "score": 0.84},
+                "topics": ["Lawsuit", "Workplace", "Legal"]
+            },
+            {
+                "title": "Tesla Cybertruck Production Ramps Up",
+                "url": "https://example.com/tesla-cybertruck",
+                "summary": "Tesla has increased production of its Cybertruck to meet high demand following its launch.",
+                "sentiment": {"label": "POSITIVE", "score": 0.90},
+                "topics": ["Cybertruck", "Production", "Demand"]
+            },
+            {
+                "title": "Environmental Impact of Tesla Factories Under Scrutiny",
+                "url": "https://example.com/tesla-environment",
+                "summary": "Environmental groups are questioning the ecological impact of Tesla's manufacturing facilities.",
+                "sentiment": {"label": "NEGATIVE", "score": 0.69},
+                "topics": ["Environment", "Manufacturing", "Sustainability"]
+            },
+            {
+                "title": "Tesla Partners with Major Mining Company for Battery Materials",
+                "url": "https://example.com/tesla-mining",
+                "summary": "Tesla has formed a partnership with a major mining company to secure sustainable battery materials.",
+                "sentiment": {"label": "POSITIVE", "score": 0.82},
+                "topics": ["Mining", "Partnership", "Supply Chain"]
+            },
+            {
+                "title": "Tesla Unveils New AI Chip for Self-Driving",
+                "url": "https://example.com/tesla-ai",
+                "summary": "Tesla has developed a new AI chip that significantly improves processing power for its self-driving systems.",
+                "sentiment": {"label": "POSITIVE", "score": 0.92},
+                "topics": ["AI", "Hardware", "Self-Driving"]
+            },
+            {
+                "title": "Tesla's Market Share in China Decreases",
+                "url": "https://example.com/tesla-china",
+                "summary": "Tesla's market share in China has decreased as local competitors introduce new electric vehicle models.",
+                "sentiment": {"label": "NEGATIVE", "score": 0.73},
+                "topics": ["China", "Market Share", "Competition"]
+            },
+            {
+                "title": "Tesla Energy Division Reports Record Growth",
+                "url": "https://example.com/tesla-energy",
+                "summary": "Tesla's energy division, which includes Powerwall and utility-scale batteries, has reported record growth.",
+                "sentiment": {"label": "POSITIVE", "score": 0.89},
+                "topics": ["Energy", "Growth", "Powerwall"]
+            },
+            {
+                "title": "Tesla Recalls 50,000 Vehicles Over Safety Concern",
+                "url": "https://example.com/tesla-recall",
+                "summary": "Tesla has issued a recall for 50,000 vehicles due to a potential safety issue with the braking system.",
+                "sentiment": {"label": "NEGATIVE", "score": 0.80},
+                "topics": ["Recall", "Safety", "Quality Control"]
             }
         ],
         "Comparative_Sentiment_Score": {
-            "Average_Score": 0.67,
+            "Average_Score": 0.83,
             "Sentiment_Distribution": {
-                "POSITIVE": 2,
-                "NEUTRAL": 0,
-                "NEGATIVE": 1
+                "POSITIVE": 13,
+                "NEUTRAL": 1,
+                "NEGATIVE": 6
             }
         },
-        "Final_Sentiment_Analysis": "Primarily positive sentiment with some regulatory concerns noted.",
-        "Hindi_Text": "टेस्ला के नए मॉडल ने बिक्री के रिकॉर्ड तोड़े हैं। नियामकों ने सेल्फ-ड्राइविंग टेक्नोलॉजी पर चिंता जताई है। एलोन मस्क ने नए गीगाफैक्ट्री की घोषणा की है।",
+        "Final_Sentiment_Analysis": "Overall strongly positive sentiment (65% positive) with strong financial and production performance, balanced by some regulatory and environmental concerns.",
+        "Hindi_Text": "टेस्ला का समग्र प्रदर्शन सकारात्मक रहा है, जिसमें रिकॉर्ड तोड़ बिक्री, उत्पादन में वृद्धि और शेयर मूल्य में उछाल शामिल है। नई बैटरी तकनीक और AI चिप के विकास से इनोवेशन में प्रगति दिखाई दे रही है। हालांकि, नियामकों की ओर से सेल्फ-ड्राइविंग टेक्नोलॉजी पर चिंताएं, उत्पादन में देरी और चीन में बाजार हिस्सेदारी में कमी जैसी चुनौतियां भी हैं। कंपनी की भारत में प्रवेश और सुपरचार्जर नेटवर्क का विस्तार इसके वैश्विक विकास का संकेत देता है।",
         "Audio": ""
     },
     "google": {
